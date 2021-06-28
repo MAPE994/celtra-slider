@@ -1,0 +1,100 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Celtra Circular Slider</title>
+</head>
+
+<template id="slider-element">
+  <style>
+    #slider {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: solid black 1px;
+    }
+
+    .slider-inner {
+        position: absolute;
+        content: "";
+        background-color: white;
+        border-radius: 50%;
+        border: solid black 1px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .rendered {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+    }
+
+    #slider-indicator-container {
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    #slider-indicator{
+      cursor: pointer;
+      position: absolute;
+      content: "";
+      border-radius: 50%;
+      border: solid black 1px;
+      background-color: #fff;
+      width: 30px;
+      height: 30px;
+      top: 0;
+    }
+  </style>
+  <div id="slider">
+    <div class="slider-inner"></div>
+    <div id="slider-indicator-container">
+      <div id="slider-indicator" draggable="true"></div>
+    </div>
+  </div>
+</template>
+
+
+<body>
+    <h1>CELTRA CIRCULAR SLIDER</h1>
+      <slider-container radius = '500''>
+        <slider-element
+          max = '360'
+          min = '1'
+          step = '5'
+          color = 'yellow'
+          value = '0'
+        >
+        </slider-element>
+        <slider-element
+          max = '69'
+          min = '1'
+          value = '0'
+          color = 'green'
+        >
+        </slider-element>
+        <slider-element
+          max = '69'
+          min = '1'
+          step = '3'
+          value = '0'
+          color = 'blue'
+        >
+        </slider-element>
+      </slider-container>
+    </div>
+
+  <script src="js/slider.js"></script>
+  <script src="js/slider-container.js"></script>
+</body>
+</html>
