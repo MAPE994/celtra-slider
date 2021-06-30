@@ -28,12 +28,36 @@ class Slider extends HTMLElement {
         this.renderSlider();
 
         //add event listeners
-        this.addEventListener('click', this.calculateAngleInDeg);
-        this.addEventListener('click', this.setSliderIndicator);
-        this.addEventListener('drag', this.calculateAngleInDeg);
-        this.addEventListener('drag', this.setSliderIndicator);
-        this.addEventListener('mouseup', this.calculateAngleInDeg);
-        this.addEventListener('mouseup', this.setSliderIndicator);
+        this.addEventListener('click', (e) => {
+            const endPositionHorizontal = e.clientX,
+                  endPositionVertical = e.clientY;
+
+           this.calculateAngleInDeg(endPositionHorizontal, endPositionVertical);
+           this.setSliderIndicator();
+        });
+
+        this.addEventListener('drag', (e) => {
+            const endPositionHorizontal = e.x ? e.x : this.endPositionHorizontal,
+                  endPositionVertical = e.y ? e.y : this.endPositionVertical;
+
+            this.endPositionHorizontal = endPositionHorizontal;
+            this.endPositionVertical = endPositionVertical;
+
+            this.calculateAngleInDeg(endPositionHorizontal, endPositionVertical);
+            this.setSliderIndicator();
+        });
+
+        this.addEventListener('touchmove', (e) => {
+            const touch = e && e.changedTouches && e.changedTouches.length && e.changedTouches[0];
+            const endPositionHorizontal = touch.clientX ? touch.clientX : this.endPositionHorizontal,
+                  endPositionVertical = touch.clientY ? touch.clientY : this.endPositionVertical;
+
+            this.endPositionHorizontal = endPositionHorizontal;
+            this.endPositionVertical = endPositionVertical;
+
+            this.calculateAngleInDeg(endPositionHorizontal, endPositionVertical);
+            this.setSliderIndicator();
+        });
     }
 
     renderSlider() {
@@ -42,16 +66,13 @@ class Slider extends HTMLElement {
         this.drawBackground(this.slider, this.currentAngle);
     }
 
-    calculateAngleInDeg(event) {
+    calculateAngleInDeg(endPositionHorizontal, endPositionVertical) {
         let element = this.slider,
             widthCenter = element.offsetWidth / 2,
             heightCenter = element.offsetHeight / 2,
 
             startPositionHorizontal = this.getOffset(element).left + widthCenter,
             startPositionVertical= this.getOffset(element).top + heightCenter,
-
-            endPositionHorizontal = event.clientX,
-            endPositionVertical = event.clientY,
 
             angleRad = Math.atan2(endPositionVertical - startPositionVertical, endPositionHorizontal - startPositionHorizontal),
             angleDeg  = angleRad * (180 / Math.PI) + 90;
@@ -61,13 +82,12 @@ class Slider extends HTMLElement {
         }
 
         this.currentAngle = this.applyStep(angleDeg);
-
         this.value = this.calculateValue(this.currentAngle);
-
         this.drawBackground(element, this.currentAngle);
     }
 
     drawBackground(element, angleDeg) {
+        //Not working as intended.
         if (angleDeg <= 180) {
             element.style.backgroundImage ='linear-gradient(' + (90 + angleDeg) + 'deg, transparent 50%, #fff 50%), linear-gradient(90deg, #fff 50%, transparent 50%)';
         }

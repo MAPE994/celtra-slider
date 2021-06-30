@@ -2,8 +2,6 @@ class SliderContainer extends HTMLElement {
     constructor () {
         super();
 
-        //Check required values
-        this.noRadius();
     }
 
     connectedCallback() {
@@ -11,10 +9,13 @@ class SliderContainer extends HTMLElement {
         this.radius = this.getAttribute('radius');
         this.sliderElements = this.querySelectorAll('slider-element');
         
+        //Check required values
+        this.noRadius();
         this.render();
 
         this.addEventListener('click', this.appendDisplay);
         this.addEventListener('drag', this.appendDisplay);
+        this.addEventListener('touchmove', this.appendDisplay);
     }
 
     render() {
